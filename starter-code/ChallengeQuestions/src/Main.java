@@ -3,6 +3,25 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         //Add code here to test your solutions
+        System.out.println(Arrays.toString(findLargestAndSmallest(new int[]{1, 2, 7, 5, -1})));
+
+
+        List<Integer> testList = new ArrayList<>();
+        testList.add(20);
+        testList.add(204);
+        testList.add(30);
+        testList.add(400);
+        System.out.println(sumOfTwoLargest(testList));
+
+        testList.add(20);
+        testList.add(20);
+        testList.add(35);
+        testList.add(400);
+        System.out.println(removeDuplicatesFromList(testList));
+
+        int[] testArray1 = {1, 3, 5, 7, 9, 0, 0, 0, 0};
+        int[] testArray2 = {1, 3, 4, 6};
+        System.out.println(Arrays.toString(mergeSortedArrays(testArray1, testArray2)));
     }
 
     /**
@@ -16,6 +35,19 @@ public class Main {
      * @return An array of integers with two elements, the largest and smallest from the method parameter
      */
     public static int[] findLargestAndSmallest(int array[]){
+        int[] largeSmall = new int[2];
+        //smallest
+        largeSmall[0] = array[0];
+        //largest
+        largeSmall[1] = array[1];
+        for (int i = 0; i < array.length; i++) {
+            if(array[i] < largeSmall[0])
+                largeSmall[0] = array[i];
+            if(array[i] > largeSmall[1])
+                largeSmall[1] = array[i];
+            
+        }
+        return largeSmall;
 
     }
 
@@ -32,6 +64,32 @@ public class Main {
      * @return Sum of the two largest values
      */
     public static int sumOfTwoLargest(List intList){
+        if(intList.size() <= 0)
+            return 0;
+        if(intList.size() == 1)
+            return (int) intList.get(0);
+        int[] largestValues = new int[2];
+        int n1 = (int)intList.get(0);
+        int n2 = (int)intList.get(1);
+        if(n1 > n2){
+            largestValues[0] = n2;
+            largestValues[1] = n1;
+
+        }
+        else {
+            largestValues[0] = n1;
+            largestValues[1] = n2;
+        }
+        for (int i = 2; i < intList.size(); i++) {
+            int x = (int) intList.get(i);
+            if( x > largestValues[0] && x > largestValues[1]) {
+                largestValues[0] = largestValues[1];
+                largestValues[1] = x;
+            }
+            else if(x > largestValues[0])
+                largestValues[0] = x;
+        }
+        return largestValues[0] + largestValues[1];
        
     }
 
@@ -51,6 +109,15 @@ public class Main {
      * @return A List of Integers that doesn't contain duplicates.
      */
     public static List removeDuplicatesFromList(List intList){
+        List<Integer> newList = new LinkedList<>();
+        Collections.sort(intList);
+        newList.add((int)intList.get(0));
+        for (int i = 1; i < intList.size(); i++) {
+            if((int)intList.get(i) == (int)intList.get(i-1))
+                continue;
+            newList.add((int)intList.get(i));
+        }
+        return newList;
 
     }
 
@@ -78,6 +145,33 @@ public class Main {
      * @return Array of sorted integers, merged from array1 and array2
      */
     public static int[] mergeSortedArrays(int[] array1, int[] array2){
-        return null;
+
+        //solution using lists
+        /*List<Integer> list1 = new ArrayList<>();
+        for (int i = 0; i < array1.length; i++) {
+            if(array1[i] == 0)
+                break;
+            list1.add(array1[i]);
+        }
+        for (int i = 0; i < array2.length; i++) {
+            list1.add(array2[i]);
+        }
+        Collections.sort(list1);
+        int[] allInts = new int[list1.size()];
+        for (int i = 0; i < list1.size(); i++) {
+            allInts[i] = list1.get(i).intValue();
+        }*/
+
+        //solution using array copying
+        int breakPoint = array1.length - array2.length;
+        for (int i = breakPoint; i < array1.length; i++) {
+            array1[i] = array2[i - breakPoint];
+        }
+        Arrays.sort(array1);
+        return array1;
+
+
+        //return allInts;
+        //return null;
     }
 }
